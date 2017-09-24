@@ -8,11 +8,13 @@ This error is specific to the Arduino IDE (*version 1.83*). I fist noticed it wh
 
 # Problem Details
 
-There are two folders within this repo, `typedefstruct_pass` and `typedefstruct_fail`. Each contans a single `ino` file.
+There are two *primary* folders within this repo, `typedefstruct_pass` and `typedefstruct_fail`. Each contans a single `ino` file.
 
 When the failing example is verified the error is a on a `typedef` symbol and the result is -  "*was not declared in this scope*".
 
 The unusual aspect of the failure is that it appears to be related to the position of the `typedef` within the `ino` file. 
+
+There is a third folder - `typedefstruct_fail_void` that is described later in this document, it is found under [Additional Issue](#additional-issue).
 
 ## Passing Example 
 
