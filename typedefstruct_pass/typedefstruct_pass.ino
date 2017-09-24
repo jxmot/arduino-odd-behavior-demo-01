@@ -13,7 +13,7 @@ void loop() {
 
 SensorData sdata;
 
-bool testfunc(SensorData &_data) {
+void testfunc(SensorData &_data) {
 
 }
 

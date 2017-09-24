@@ -77,6 +77,36 @@ typedefstruct_fail:17: error: 'SensorData' was not declared in this scope
 
 What I find to be odd about this is the line `SensorData sdata;` does not generate an error. The function below it should be within the *same scope*.
 
+# Additional Issue
+
+There is a third folder - `typedefstruct_fail_void`, containing an `ino` file that also fails verification. And this is just as odd as the previously mentioned failure.
+
+## Failing Example
+
+The only difference between `typedefstruct_fail` and `typedefstruct_fail_void` is this :
+
+```
+bool testfunc(SensorData &_data) {
+
+}
+```
+
+**VS.**
+
+```
+void testfunc(SensorData &_data) {
+
+}
+```
+
+The compiler generates this error :
+
+```
+typedefstruct_fail_void:17: error: variable or field 'testfunc' declared void
+```
+
+**NOTE:** The passing example has no errors regardless of the return type for `testfunc()`.
+
 # Summary
 
 At this time I'm not sure what the cause is. But I believe to be the result of an error within the compiler. And as I learn more about this issue this repository will be updated.
