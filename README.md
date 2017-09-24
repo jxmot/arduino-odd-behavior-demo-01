@@ -109,6 +109,10 @@ typedefstruct_fail_void:17: error: variable or field 'testfunc' declared void
 
 **NOTE:** The passing example has no errors regardless of the return type for `testfunc()`.
 
+# Other Testing
+
+An *online* compiler (<http://cpp.sh/>) was used on all three files and did not report any *compile time* errors. Linkage errors occured only because of a missing `main()`.
+
 # Summary
 
 At this time I'm not sure what the cause is. But I believe to be the result of an error within the compiler. And as I learn more about this issue this repository will be updated.
