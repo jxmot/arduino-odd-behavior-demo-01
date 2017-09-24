@@ -113,6 +113,18 @@ typedefstruct_fail_void:17: error: variable or field 'testfunc' declared void
 
 An *online* compiler (<http://cpp.sh/>) was used on all three files and did not report any *compile time* errors. Linkage errors occured only because of a missing `main()`.
 
+# Additional Research
+
+I have registered on the Arduino.cc forum and read the following posts - 
+
+[Read this before posting a programming question ...](https://forum.arduino.cc/index.php?topic=97455.0)
+
+which led to -  
+
+[How to avoid the quirks of the IDE sketch file pre-preprocessing](http://www.gammon.com.au/forum/?id=12625)
+
+Neither source appeared to explain what might be happening.
+
 # Summary
 
 At this time I'm not sure what the cause is. But I believe to be the result of an error within the compiler. And as I learn more about this issue this repository will be updated.
