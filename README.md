@@ -129,5 +129,50 @@ Neither source appeared to explain what might be happening.
 
 At this time I'm not sure what the cause is. But I believe to be the result of an error within the compiler. And as I learn more about this issue this repository will be updated.
 
+## Update
 
+I created a thread at *arduino.cc* - [compiler error that depends upon the location of a typedef...](http://forum.arduino.cc/index.php?topic=501909). And the responses were extremely helpful in providing information regarding the cause.
 
+To summarize, the Arduino IDE's *preprocessor* is what I was up against. In my opinion there really isn't any fault there. I just needed a better understanding of how this particular preprocessor worked. 
+
+Apparently the preprocessor is creating a `.cpp` file out of the sketch *before* passing it on to the compiler. And as part of the preprocess step function prototypes are being created. And since I had (*in the failing version*) the typedef further down in the file an error would occur because the preprocessor created a prototype above that line in the resulting `.cpp` file.
+
+I learned from the replies in the thread that there is a way to see what's happening in the preprocessor. All that's needed is to change the preferences so that `Show verbose output during:` compilation is checked. To examine the `.cpp` that the IDE created look in the IDE's result window and find a file named `your-sketch-name.ino.cpp`. Open it in your editor a take a look at it.
+
+In the case presented here you'll notice that the function prototypes are placed *before* the `typedef struct`. 
+
+**`typedefstruct_fail.ino.cpp`** :
+
+```
+#include <Arduino.h>
+#line 1 "E:\\Workspaces\\IoT\\ESP8266\\arducam_K0061_ESP8266_KIT\\repos\\arduino-odd-behavior-demo-01\\typedefstruct_fail\\typedefstruct_fail.ino"
+#line 1 "E:\\Workspaces\\IoT\\ESP8266\\arducam_K0061_ESP8266_KIT\\repos\\arduino-odd-behavior-demo-01\\typedefstruct_fail\\typedefstruct_fail.ino"
+
+#line 2 "E:\\Workspaces\\IoT\\ESP8266\\arducam_K0061_ESP8266_KIT\\repos\\arduino-odd-behavior-demo-01\\typedefstruct_fail\\typedefstruct_fail.ino"
+void setup();
+#line 5 "E:\\Workspaces\\IoT\\ESP8266\\arducam_K0061_ESP8266_KIT\\repos\\arduino-odd-behavior-demo-01\\typedefstruct_fail\\typedefstruct_fail.ino"
+void loop();
+#line 17 "E:\\Workspaces\\IoT\\ESP8266\\arducam_K0061_ESP8266_KIT\\repos\\arduino-odd-behavior-demo-01\\typedefstruct_fail\\typedefstruct_fail.ino"
+bool testfunc(SensorData &_data);
+#line 2 "E:\\Workspaces\\IoT\\ESP8266\\arducam_K0061_ESP8266_KIT\\repos\\arduino-odd-behavior-demo-01\\typedefstruct_fail\\typedefstruct_fail.ino"
+void setup() {
+}
+
+void loop() {
+}
+
+typedef struct {
+   const char* name;
+   int time;
+   float value;
+} SensorData;
+
+/* no error on the next line, why? */
+SensorData sdata;
+
+bool testfunc(SensorData &_data) {
+
+}
+```
+
+Take note of line marked as #17. It was pointed out to me that the preprocessor *created* the prototype because I neglected to do so. Following that is the `typedef` that was giving me trouble. Although the error is actually on line 17 the IDE had to report something. And since the sketch file is what you see in the IDE (*not the preprocessed .cpp file*) the error is shown to be on the function definition of `bool testfunc(SensorData &_data)`.
