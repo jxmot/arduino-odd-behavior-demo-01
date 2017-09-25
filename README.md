@@ -6,6 +6,10 @@ This repository contains a demonstration of a compile error that occurs dependin
 
 This error is specific to the Arduino IDE (*version 1.83*). I fist noticed it while working on an **ESP8266** project where I was adding in some code to an `ino` file. At first I had looked for any syntax errors or errors where the intent wasn't matched to the code. Eventually I distilled the code down to its simplest form and could still reproduce the error.
 
+## Cause Found
+
+Please take a look at the [Summary](#summary) section below for details.
+
 # Problem Details
 
 There are two *primary* folders within this repo, `typedefstruct_pass` and `typedefstruct_fail`. Each contans a single `ino` file.
@@ -176,3 +180,5 @@ bool testfunc(SensorData &_data) {
 ```
 
 Take note of line marked as #17. It was pointed out to me that the preprocessor *created* the prototype because I neglected to do so. Following that is the `typedef` that was giving me trouble. Although the error is actually on line 17 the IDE had to report something. And since the sketch file is what you see in the IDE (*not the preprocessed .cpp file*) the error is shown to be on the function definition of `bool testfunc(SensorData &_data)`.
+
+
